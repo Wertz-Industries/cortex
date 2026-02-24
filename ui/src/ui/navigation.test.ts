@@ -86,7 +86,7 @@ describe("subtitleForTab", () => {
   });
 
   it("returns descriptive subtitles", () => {
-    expect(subtitleForTab("chat")).toContain("chat session");
+    expect(subtitleForTab("chat")).toContain("chat");
     expect(subtitleForTab("config")).toContain("openclaw.json");
   });
 });

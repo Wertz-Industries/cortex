@@ -82,7 +82,7 @@ export function loadSettings(): UiSettings {
       navCollapsed:
         typeof parsed.navCollapsed === "boolean" ? parsed.navCollapsed : defaults.navCollapsed,
       navWidth:
-        typeof parsed.navWidth === "number" && parsed.navWidth >= 240 && parsed.navWidth <= 400
+        typeof parsed.navWidth === "number" && parsed.navWidth >= 200 && parsed.navWidth <= 400
           ? parsed.navWidth
           : defaults.navWidth,
       navGroupsCollapsed:

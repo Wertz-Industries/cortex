@@ -162,7 +162,7 @@ htmlEscapeRenderer.code = ({
   lang?: string;
   escaped?: boolean;
 }) => {
-  const langClass = lang ? ` class="language-${lang}"` : "";
+  const langClass = lang ? ` class="language-${escapeHtml(lang)}"` : "";
   const safeText = escaped ? text : escapeHtml(text);
   const codeBlock = `<pre><code${langClass}>${safeText}</code></pre>`;
   const langLabel = lang ? `<span class="code-block-lang">${escapeHtml(lang)}</span>` : "";

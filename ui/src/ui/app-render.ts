@@ -81,6 +81,66 @@ import { renderOverview } from "./views/overview.ts";
 import { renderSessions } from "./views/sessions.ts";
 import { renderSkills } from "./views/skills.ts";
 
+const UPDATE_BANNER_DISMISS_KEY = "openclaw:control-ui:update-banner-dismissed:v1";
+
+type DismissedUpdateBanner = {
+  latestVersion: string;
+  channel: string | null;
+  dismissedAtMs: number;
+};
+
+function loadDismissedUpdateBanner(): DismissedUpdateBanner | null {
+  try {
+    const raw = localStorage.getItem(UPDATE_BANNER_DISMISS_KEY);
+    if (!raw) {
+      return null;
+    }
+    const parsed = JSON.parse(raw) as Partial<DismissedUpdateBanner>;
+    if (!parsed || typeof parsed.latestVersion !== "string") {
+      return null;
+    }
+    return {
+      latestVersion: parsed.latestVersion,
+      channel: typeof parsed.channel === "string" ? parsed.channel : null,
+      dismissedAtMs: typeof parsed.dismissedAtMs === "number" ? parsed.dismissedAtMs : Date.now(),
+    };
+  } catch {
+    return null;
+  }
+}
+
+function isUpdateBannerDismissed(updateAvailable: unknown): boolean {
+  const dismissed = loadDismissedUpdateBanner();
+  if (!dismissed) {
+    return false;
+  }
+  const info = updateAvailable as { latestVersion?: unknown; channel?: unknown };
+  const latestVersion = info && typeof info.latestVersion === "string" ? info.latestVersion : null;
+  const channel = info && typeof info.channel === "string" ? info.channel : null;
+  return Boolean(
+    latestVersion && dismissed.latestVersion === latestVersion && dismissed.channel === channel,
+  );
+}
+
+function dismissUpdateBanner(updateAvailable: unknown) {
+  const info = updateAvailable as { latestVersion?: unknown; channel?: unknown };
+  const latestVersion = info && typeof info.latestVersion === "string" ? info.latestVersion : null;
+  if (!latestVersion) {
+    return;
+  }
+  const channel = info && typeof info.channel === "string" ? info.channel : null;
+  const payload: DismissedUpdateBanner = {
+    latestVersion,
+    channel,
+    dismissedAtMs: Date.now(),
+  };
+  try {
+    localStorage.setItem(UPDATE_BANNER_DISMISS_KEY, JSON.stringify(payload));
+  } catch {
+    // ignore
+  }
+}
+
 const AVATAR_DATA_RE = /^data:/i;
 const AVATAR_HTTP_RE = /^https?:\/\//i;
 const COMMUNICATION_SECTION_KEYS = ["channels", "messages", "broadcast", "talk", "audio"] as const;
@@ -354,7 +414,9 @@ export function renderApp(state: AppViewState) {
       </div>
       <main class="content ${isChat ? "content--chat" : ""}">
         ${
-          state.updateAvailable
+          state.updateAvailable &&
+          state.updateAvailable.latestVersion !== state.updateAvailable.currentVersion &&
+          !isUpdateBannerDismissed(state.updateAvailable)
             ? html`<div class="update-banner callout danger" role="alert">
               <strong>Update available:</strong> v${state.updateAvailable.latestVersion}
               (running v${state.updateAvailable.currentVersion}).
@@ -363,6 +425,18 @@ export function renderApp(state: AppViewState) {
                 ?disabled=${state.updateRunning || !state.connected}
                 @click=${() => runUpdate(state)}
               >${state.updateRunning ? "Updating…" : "Update now"}</button>
+              <button
+                class="update-banner__close"
+                type="button"
+                title="Dismiss"
+                aria-label="Dismiss update banner"
+                @click=${() => {
+                  dismissUpdateBanner(state.updateAvailable);
+                  state.updateAvailable = null;
+                }}
+              >
+                ${icons.x}
+              </button>
             </div>`
             : nothing
         }
