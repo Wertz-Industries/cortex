@@ -1,17 +1,18 @@
 // Default service labels (canonical + legacy compatibility)
-export const GATEWAY_LAUNCH_AGENT_LABEL = "ai.openclaw.gateway";
-export const GATEWAY_SYSTEMD_SERVICE_NAME = "openclaw-gateway";
-export const GATEWAY_WINDOWS_TASK_NAME = "OpenClaw Gateway";
-export const GATEWAY_SERVICE_MARKER = "openclaw";
+export const GATEWAY_LAUNCH_AGENT_LABEL = "ai.wertz.cortex.gateway";
+export const GATEWAY_SYSTEMD_SERVICE_NAME = "cortex-gateway";
+export const GATEWAY_WINDOWS_TASK_NAME = "Cortex Gateway";
+export const GATEWAY_SERVICE_MARKER = "cortex";
 export const GATEWAY_SERVICE_KIND = "gateway";
-export const NODE_LAUNCH_AGENT_LABEL = "ai.openclaw.node";
-export const NODE_SYSTEMD_SERVICE_NAME = "openclaw-node";
-export const NODE_WINDOWS_TASK_NAME = "OpenClaw Node";
-export const NODE_SERVICE_MARKER = "openclaw";
+export const NODE_LAUNCH_AGENT_LABEL = "ai.wertz.cortex.node";
+export const NODE_SYSTEMD_SERVICE_NAME = "cortex-node";
+export const NODE_WINDOWS_TASK_NAME = "Cortex Node";
+export const NODE_SERVICE_MARKER = "cortex";
 export const NODE_SERVICE_KIND = "node";
 export const NODE_WINDOWS_TASK_SCRIPT_NAME = "node.cmd";
-export const LEGACY_GATEWAY_LAUNCH_AGENT_LABELS: string[] = [];
+export const LEGACY_GATEWAY_LAUNCH_AGENT_LABELS: string[] = ["ai.openclaw.gateway"];
 export const LEGACY_GATEWAY_SYSTEMD_SERVICE_NAMES: string[] = [
+  "openclaw-gateway",
   "clawdbot-gateway",
   "moltbot-gateway",
 ];
@@ -35,7 +36,7 @@ export function resolveGatewayLaunchAgentLabel(profile?: string): string {
   if (!normalized) {
     return GATEWAY_LAUNCH_AGENT_LABEL;
   }
-  return `ai.openclaw.${normalized}`;
+  return `ai.wertz.cortex.${normalized}`;
 }
 
 export function resolveLegacyGatewayLaunchAgentLabels(profile?: string): string[] {
@@ -48,7 +49,7 @@ export function resolveGatewaySystemdServiceName(profile?: string): string {
   if (!suffix) {
     return GATEWAY_SYSTEMD_SERVICE_NAME;
   }
-  return `openclaw-gateway${suffix}`;
+  return `cortex-gateway${suffix}`;
 }
 
 export function resolveGatewayWindowsTaskName(profile?: string): string {
@@ -56,7 +57,7 @@ export function resolveGatewayWindowsTaskName(profile?: string): string {
   if (!normalized) {
     return GATEWAY_WINDOWS_TASK_NAME;
   }
-  return `OpenClaw Gateway (${normalized})`;
+  return `Cortex Gateway (${normalized})`;
 }
 
 export function formatGatewayServiceDescription(params?: {
@@ -73,9 +74,9 @@ export function formatGatewayServiceDescription(params?: {
     parts.push(`v${version}`);
   }
   if (parts.length === 0) {
-    return "OpenClaw Gateway";
+    return "Cortex Gateway";
   }
-  return `OpenClaw Gateway (${parts.join(", ")})`;
+  return `Cortex Gateway (${parts.join(", ")})`;
 }
 
 export function resolveGatewayServiceDescription(params: {
@@ -107,7 +108,7 @@ export function resolveNodeWindowsTaskName(): string {
 export function formatNodeServiceDescription(params?: { version?: string }): string {
   const version = params?.version?.trim();
   if (!version) {
-    return "OpenClaw Node Host";
+    return "Cortex Node Host";
   }
-  return `OpenClaw Node Host (v${version})`;
+  return `Cortex Node Host (v${version})`;
 }

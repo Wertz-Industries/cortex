@@ -1,20 +1,20 @@
 {
-  "name": "openclaw",
+  "name": "cortex",
   "version": "2026.2.24",
-  "description": "Multi-channel AI gateway with extensible messaging integrations",
+  "description": "Autonomous AI nervous system — brain, body, hands, ears, eyes",
   "keywords": [],
-  "homepage": "https://github.com/openclaw/openclaw#readme",
+  "homepage": "https://github.com/Wertz-Industries/cortex#readme",
   "bugs": {
-    "url": "https://github.com/openclaw/openclaw/issues"
+    "url": "https://github.com/Wertz-Industries/cortex/issues"
   },
   "license": "MIT",
   "author": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openclaw/openclaw.git"
+    "url": "git+https://github.com/Wertz-Industries/cortex.git"
   },
   "bin": {
-    "openclaw": "openclaw.mjs"
+    "cortex": "cortex.mjs"
   },
   "directories": {
     "doc": "docs",
@@ -23,7 +23,7 @@
   "files": [
     "CHANGELOG.md",
     "LICENSE",
-    "openclaw.mjs",
+    "cortex.mjs",
     "README-header.png",
     "README.md",
     "assets/",
@@ -44,7 +44,7 @@
       "types": "./dist/plugin-sdk/account-id.d.ts",
       "default": "./dist/plugin-sdk/account-id.js"
     },
-    "./cli-entry": "./openclaw.mjs"
+    "./cli-entry": "./cortex.mjs"
   },
   "scripts": {
     "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug",

@@ -1,110 +1,67 @@
-## OpenClaw Vision
+## Cortex Vision
 
-OpenClaw is the AI that actually does things.
-It runs on your devices, in your channels, with your rules.
+Cortex is the autonomous AI nervous system for Wertz Industries.
+It runs on our devices, coordinates our agents, and executes real work without waiting for human input.
 
 This document explains the current state and direction of the project.
-We are still early, so iteration is fast.
-Project overview and developer docs: [`README.md`](README.md)
-Contribution guide: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+Project overview and setup: [`README.md`](README.md)
 
-OpenClaw started as a personal playground to learn AI and build something genuinely useful:
-an assistant that can run real tasks on a real computer.
-It evolved through several names and shells: Warelay -> Clawdbot -> Moltbot -> OpenClaw.
+Cortex started as a fork of OpenClaw, a personal AI assistant framework.
+We took its solid orchestration foundation and are reshaping it into something different:
+a persistent, multi-node nervous system where AI agents operate autonomously across a fleet of machines.
 
-The goal: a personal assistant that is easy to use, supports a wide range of platforms, and respects privacy and security.
+The goal: a self-managing infrastructure where Claude (the brain) directs work across
+Mac Studio, MacBook, and Windows PC nodes — handling messaging, scheduling, memory,
+monitoring, and task execution without constant human oversight.
 
-The current focus is:
+### Current Focus
 
 Priority:
 
-- Security and safe defaults
-- Bug fixes and stability
-- Setup reliability and first-run UX
+- Autonomous agent operation (Jarvis worker pattern, task queue)
+- Multi-node orchestration (WertzNet mesh connectivity)
+- Memory and context persistence (RAG, ChromaDB, session continuity)
+- Telegram integration as primary communication channel
 
 Next priorities:
 
-- Supporting all major model providers
-- Improving support for major messaging channels (and adding a few high-demand ones)
-- Performance and test infrastructure
-- Better computer-use and agent harness capabilities
-- Ergonomics across CLI and web frontend
-- Companion apps on macOS, iOS, Android, Windows, and Linux
+- Hook system for event-driven automation
+- Scheduled task execution (cron-like agent triggers)
+- Cross-node file synchronization and state sharing
+- Sensor integration (system health, network status, log monitoring)
+- Self-healing: agents detect failures and recover without intervention
 
-Contribution rules:
+### Architecture Principles
 
-- One PR = one issue/topic. Do not bundle multiple unrelated fixes/features.
-- PRs over ~5,000 changed lines are reviewed only in exceptional circumstances.
-- Do not open large batches of tiny PRs at once; each PR has review cost.
-- For very small related fixes, grouping into one focused PR is encouraged.
+- **Autonomy first.** The system should keep working when no human is watching.
+  Agents pick up tasks, execute them, and report results. Human input is for
+  strategy and course correction, not micromanagement.
 
-## Security
+- **Fleet-native.** Cortex assumes multiple nodes. Work routes to the right machine
+  based on capability (GPU on Windows, always-on on Mac Studio, mobile on MacBook).
 
-Security in OpenClaw is a deliberate tradeoff: strong defaults without killing capability.
-The goal is to stay powerful for real work while making risky paths explicit and operator-controlled.
+- **Memory is infrastructure.** Context doesn't die between sessions. RAG indexing,
+  task history, and conversation memory are core services, not plugins.
 
-Canonical security policy and reporting:
+- **Secure by default.** Strong defaults without killing capability. WertzNet provides
+  the encrypted mesh; Cortex manages permissions and trust boundaries.
 
-- [`SECURITY.md`](SECURITY.md)
+### What Cortex Is Not
 
-We prioritize secure defaults, but also expose clear knobs for trusted high-power workflows.
+- Not a chatbot framework. Conversation is one interface, not the product.
+- Not a cloud service. Everything runs on our hardware.
+- Not a general-purpose AI platform. This is built for one organization's needs,
+  optimized for how we actually work.
 
-## Plugins & Memory
+### Lineage
 
-OpenClaw has an extensive plugin API.
-Core stays lean; optional capability should usually ship as plugins.
+Cortex is forked from [OpenClaw](https://github.com/openclaw/openclaw) (MIT license),
+created by Peter Steinberger. We gratefully acknowledge the OpenClaw project and its
+contributors for building the orchestration foundation that Cortex builds upon.
 
-Preferred plugin path is npm package distribution plus local extension loading for development.
-If you build a plugin, host and maintain it in your own repository.
-The bar for adding optional plugins to core is intentionally high.
-Plugin docs: [`docs/tools/plugin.md`](docs/tools/plugin.md)
-Community plugin listing + PR bar: https://docs.openclaw.ai/plugins/community
+The divergence is intentional: OpenClaw is a personal assistant for individuals.
+Cortex is an autonomous nervous system for an organization's machine fleet.
 
-Memory is a special plugin slot where only one memory plugin can be active at a time.
-Today we ship multiple memory options; over time we plan to converge on one recommended default path.
+---
 
-### Skills
-
-We still ship some bundled skills for baseline UX.
-New skills should be published to ClawHub first (`clawhub.ai`), not added to core by default.
-Core skill additions should be rare and require a strong product or security reason.
-
-### MCP Support
-
-OpenClaw supports MCP through `mcporter`: https://github.com/steipete/mcporter
-
-This keeps MCP integration flexible and decoupled from core runtime:
-
-- add or change MCP servers without restarting the gateway
-- keep core tool/context surface lean
-- reduce MCP churn impact on core stability and security
-
-For now, we prefer this bridge model over building first-class MCP runtime into core.
-If there is an MCP server or feature `mcporter` does not support yet, please open an issue there.
-
-### Setup
-
-OpenClaw is currently terminal-first by design.
-This keeps setup explicit: users see docs, auth, permissions, and security posture up front.
-
-Long term, we want easier onboarding flows as hardening matures.
-We do not want convenience wrappers that hide critical security decisions from users.
-
-### Why TypeScript?
-
-OpenClaw is primarily an orchestration system: prompts, tools, protocols, and integrations.
-TypeScript was chosen to keep OpenClaw hackable by default.
-It is widely known, fast to iterate in, and easy to read, modify, and extend.
-
-## What We Will Not Merge (For Now)
-
-- New core skills when they can live on ClawHub
-- Full-doc translation sets for all docs (deferred; we plan AI-generated translations later)
-- Commercial service integrations that do not clearly fit the model-provider category
-- Wrapper channels around already supported channels without a clear capability or security gap
-- First-class MCP runtime in core when `mcporter` already provides the integration path
-- Agent-hierarchy frameworks (manager-of-managers / nested planner trees) as a default architecture
-- Heavy orchestration layers that duplicate existing agent and tool infrastructure
-
-This list is a roadmap guardrail, not a law of physics.
-Strong user demand and strong technical rationale can change it.
+Built by Wertz Industries. Powered by Claude.
