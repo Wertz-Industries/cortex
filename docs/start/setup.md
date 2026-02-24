@@ -132,6 +132,8 @@ Use this when debugging auth or deciding what to back up:
 - **Slack tokens**: config/env (`channels.slack.*`)
 - **Pairing allowlists**: `~/.openclaw/credentials/<channel>-allowFrom.json`
 - **Model auth profiles**: `~/.openclaw/agents/<agentId>/agent/auth-profiles.json`
+- **Encrypted secrets payload (optional)**: `~/.openclaw/secrets.enc.json`
+- **Secrets migration backups (optional)**: `~/.openclaw/backups/secrets-migrate/<backupId>/`
 - **Legacy OAuth import**: `~/.openclaw/credentials/oauth.json`
   More detail: [Security](/gateway/security#credential-storage-map).
 
