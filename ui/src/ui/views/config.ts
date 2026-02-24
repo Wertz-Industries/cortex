@@ -1,4 +1,4 @@
-import { html, nothing } from "lit";
+import { html, nothing, type TemplateResult } from "lit";
 import { icons } from "../icons.ts";
 import type { ThemeTransitionContext } from "../theme-transition.ts";
 import type { ThemeMode, ThemeName } from "../theme.ts";
@@ -530,18 +530,23 @@ function countSensitiveValues(formValue: Record<string, unknown> | null): number
   return count;
 }
 
-type ThemeOption = { id: ThemeName; label: string; description: string; icon: string };
+type ThemeOption = { id: ThemeName; label: string; description: string; icon: TemplateResult };
 const THEME_OPTIONS: ThemeOption[] = [
-  { id: "claw", label: "Claw", description: "Chroma family", icon: "🦀" },
-  { id: "knot", label: "Knot", description: "Knot family", icon: "🪢" },
-  { id: "dash", label: "Dash", description: "Field family", icon: "📊" },
+  { id: "claw", label: "Claw", description: "Chroma family", icon: icons.zap },
+  { id: "knot", label: "Knot", description: "Knot family", icon: icons.link },
+  { id: "dash", label: "Dash", description: "Field family", icon: icons.barChart },
 ];
 
 function renderAppearanceSection(props: ConfigProps) {
-  const MODE_OPTIONS: Array<{ id: ThemeMode; label: string; description: string; icon: string }> = [
-    { id: "system", label: "System", description: "Follow OS light or dark", icon: "🖥️" },
-    { id: "dark", label: "Dark", description: "Force dark mode", icon: "🌙" },
-    { id: "light", label: "Light", description: "Force light mode", icon: "☀️" },
+  const MODE_OPTIONS: Array<{
+    id: ThemeMode;
+    label: string;
+    description: string;
+    icon: TemplateResult;
+  }> = [
+    { id: "system", label: "System", description: "Follow OS light or dark", icon: icons.monitor },
+    { id: "dark", label: "Dark", description: "Force dark mode", icon: icons.moon },
+    { id: "light", label: "Light", description: "Force light mode", icon: icons.sun },
   ];
 
   return html`
@@ -554,6 +559,7 @@ function renderAppearanceSection(props: ConfigProps) {
             (opt) => html`
               <button
                 class="settings-theme-card ${opt.id === props.theme ? "settings-theme-card--active" : ""}"
+                title=${opt.description}
                 @click=${(e: Event) => {
                   if (opt.id !== props.theme) {
                     const context: ThemeTransitionContext = {
@@ -563,10 +569,13 @@ function renderAppearanceSection(props: ConfigProps) {
                   }
                 }}
               >
-                <span class="settings-theme-card__icon">${opt.icon}</span>
+                <span class="settings-theme-card__icon" aria-hidden="true">${opt.icon}</span>
                 <span class="settings-theme-card__label">${opt.label}</span>
-                <span class="settings-theme-card__desc">${opt.description}</span>
-                ${opt.id === props.theme ? html`<span class="settings-theme-card__check">${icons.check}</span>` : nothing}
+                ${
+                  opt.id === props.theme
+                    ? html`<span class="settings-theme-card__check" aria-hidden="true">${icons.check}</span>`
+                    : nothing
+                }
               </button>
             `,
           )}
@@ -581,6 +590,7 @@ function renderAppearanceSection(props: ConfigProps) {
             (opt) => html`
               <button
                 class="settings-theme-card ${opt.id === props.themeMode ? "settings-theme-card--active" : ""}"
+                title=${opt.description}
                 @click=${(e: Event) => {
                   if (opt.id !== props.themeMode) {
                     const context: ThemeTransitionContext = {
@@ -590,12 +600,11 @@ function renderAppearanceSection(props: ConfigProps) {
                   }
                 }}
               >
-                <span class="settings-theme-card__icon">${opt.icon}</span>
+                <span class="settings-theme-card__icon" aria-hidden="true">${opt.icon}</span>
                 <span class="settings-theme-card__label">${opt.label}</span>
-                <span class="settings-theme-card__desc">${opt.description}</span>
                 ${
                   opt.id === props.themeMode
-                    ? html`<span class="settings-theme-card__check">${icons.check}</span>`
+                    ? html`<span class="settings-theme-card__check" aria-hidden="true">${icons.check}</span>`
                     : nothing
                 }
               </button>

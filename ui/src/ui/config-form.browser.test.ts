@@ -243,7 +243,7 @@ describe("config form renderer", () => {
     expect(analysis.unsupportedPaths).not.toContain("channels");
   });
 
-  it("flags additionalProperties true", () => {
+  it("normalizes additionalProperties true to any-schema object", () => {
     const schema = {
       type: "object",
       properties: {
@@ -254,6 +254,12 @@ describe("config form renderer", () => {
       },
     };
     const analysis = analyzeConfigSchema(schema);
-    expect(analysis.unsupportedPaths).toContain("extra");
+    expect(analysis.unsupportedPaths).not.toContain("extra");
+    const extraSchema = (
+      analysis.schema as Record<string, unknown> & {
+        properties: Record<string, Record<string, unknown>>;
+      }
+    ).properties.extra;
+    expect(extraSchema.additionalProperties).toEqual({});
   });
 });
