@@ -247,6 +247,7 @@
       "@napi-rs/canvas",
       "@whiskeysockets/baileys",
       "authenticate-pam",
+      "electron",
       "esbuild",
       "koffi",
       "node-llama-cpp",

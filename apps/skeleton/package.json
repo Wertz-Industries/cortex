@@ -1,0 +1,57 @@
+{
+  "name": "@cortex/skeleton-app",
+  "version": "2026.2.25",
+  "description": "Autonomous Studio Skeleton — Electron Dashboard",
+  "type": "module",
+  "main": "dist/main/index.mjs",
+  "scripts": {
+    "dev": "node scripts/build-main.mjs && ELECTRON_RENDERER_URL=http://localhost:5173 concurrently \"vite\" \"electron .\"",
+    "build": "vite build && node scripts/build-main.mjs",
+    "build:renderer": "vite build",
+    "build:main": "node scripts/build-main.mjs",
+    "start": "electron .",
+    "preview": "vite preview",
+    "pack": "pnpm build && electron-builder --mac --dir"
+  },
+  "build": {
+    "appId": "com.wertz-industries.skeleton",
+    "productName": "Skeleton",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.developer-tools",
+      "target": [
+        {
+          "target": "dir",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "lucide-react": "^0.511.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zustand": "^5.0.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.8",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.5.2",
+    "electron": "^36.3.1",
+    "electron-builder": "^26.8.1",
+    "esbuild": "^0.25.5",
+    "tailwindcss": "^4.1.8",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "skeleton",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "mode": {
+        "type": "string",
+        "enum": ["simulation", "selective", "live"]
+      },
+      "geminiApiKey": {
+        "type": "string"
+      },
+      "openaiApiKey": {
+        "type": "string"
+      },
+      "cycleCooldownMinutes": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "budgets": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "perCallUsd": { "type": "number", "minimum": 0 },
+          "perTaskUsd": { "type": "number", "minimum": 0 },
+          "perCycleUsd": { "type": "number", "minimum": 0 },
+          "dailyUsd": { "type": "number", "minimum": 0 },
+          "weeklyUsd": { "type": "number", "minimum": 0 },
+          "perProviderDailyUsd": {
+            "type": "object",
+            "additionalProperties": { "type": "number", "minimum": 0 }
+          }
+        }
+      }
+    }
+  },
+  "uiHints": {
+    "mode": {
+      "label": "Operating Mode",
+      "help": "simulation = no API calls, selective = choose live providers, live = all providers active"
+    },
+    "geminiApiKey": {
+      "label": "Gemini API Key",
+      "sensitive": true
+    },
+    "openaiApiKey": {
+      "label": "OpenAI API Key",
+      "sensitive": true
+    },
+    "cycleCooldownMinutes": {
+      "label": "Cycle Cooldown (minutes)"
+    }
+  }
+}
